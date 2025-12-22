@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Курило Анатолій ПІ(3)-03 — Лабораторна 4</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #taskInput {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: white;
+      padding: 10px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .task-text {
+      flex: 1;
+      margin-left: 10px;
+    }
+
+    .date {
+      font-size: 12px;
+      color: gray;
+      margin-left: 10px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .delete {
+      color: red;
+      cursor: pointer;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    input.edit {
+      width: 100%;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>ToDo List</h1>
+
+<input id="taskInput" type="text" placeholder="Введіть нове завдання та натисніть Enter">
+
+<ul id="taskList"></ul>
+
+<script>
+  const input = document.getElementById("taskInput");
+  const list = document.getElementById("taskList");
+
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && input.value.trim() !== "") {
+      addTask(input.value);
+      input.value = "";
+    }
+  });
+
+  function addTask(text) {
+    const li = document.createElement("li");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const span = document.createElement("span");
+    span.className = "task-text";
+    span.textContent = text;
+
+    const date = document.createElement("span");
+    date.className = "date";
+    date.textContent = new Date().toLocaleString();
+
+    const del = document.createElement("span");
+    del.className = "delete";
+    del.textContent = "✖";
+
+    checkbox.addEventListener("change", function () {
+      span.classList.add("completed");
+      checkbox.remove();
+    });
+
+    del.addEventListener("click", function () {
+      li.remove();
+    });
+
+    span.addEventListener("dblclick", function () {
+      const editInput = document.createElement("input");
+      editInput.className = "edit";
+      editInput.value = span.textContent;
+
+      li.replaceChild(editInput, span);
+      editInput.focus();
+
+      editInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          span.textContent = editInput.value;
+          li.replaceChild(span, editInput);
+        }
+      });
+    });
+
+    li.append(checkbox, span, date, del);
+    list.appendChild(li);
+  }
+</script>
+
+</body>
+</html>
