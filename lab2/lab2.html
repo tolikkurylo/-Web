@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Курило Анатолій ПІ(3)-03 — Лабораторна №2</title>
+</head>
+
+<body bgcolor="white">
+
+<h1>Лабораторна робота №2</h1>
+<h2>Робота з об’єктами в JavaScript</h2>
+
+<script>
+  // 1. Створення об'єкта book
+  let book = {
+    title: "Harry Potter and the Sorcerer's Stone",
+    author: "J.K. Rowling",
+    year: 1997,
+    isRead: true,
+
+    // 2. Метод bookInfo
+    bookInfo: function () {
+      console.log(
+        "Назва: " + this.title +
+        ", Автор: " + this.author +
+        ", Рік видання: " + this.year +
+        ", Прочитана: " + (this.isRead ? "Так" : "Ні")
+      );
+    }
+  };
+
+  // Виклик методу вперше
+  book.bookInfo();
+
+  // 3. Зміна значення isRead на протилежне
+  book.isRead = !book.isRead;
+
+  // Повторний виклик методу
+  book.bookInfo();
+</script>
+
+<p>
+Відкрийте <strong>Console</strong> (F12 → Console), щоб побачити результат.
+</p>
+
+</body>
+</html>
