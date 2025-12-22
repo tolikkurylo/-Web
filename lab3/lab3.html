@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Курило Анатолій ПІ(3)-03 — Лабораторна 3</title>
+  <style>
+    #rotator {
+      width: 400px;
+      text-align: center;
+      margin: 20px auto;
+      font-family: Arial;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+    a {
+      margin: 0 15px;
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1 align="center">Лабораторна робота 3</h1>
+<h2 align="center">Галерея зображень (тема: Коти)</h2>
+
+<div id="rotator"></div>
+
+<script>
+  // Масив зображень (КОТИ)
+  let imagesArray = [
+    {
+      path: "images/cat1.jpg",
+      title: "Кіт 1",
+      description: "Сірий кіт відпочиває"
+    },
+    {
+      path: "images/cat2.jpg",
+      title: "Кіт 2",
+      description: "Рудий кіт дивиться у вікно"
+    },
+    {
+      path: "images/cat3.jpg",
+      title: "Кіт 3",
+      description: "Кіт грається"
+    }
+  ];
+
+  function initPhotoRotator(containerId, images) {
+    let index = 0;
+    let container = document.getElementById(containerId);
+
+    let counter = document.createElement("div");
+    let img = document.createElement("img");
+    let title = document.createElement("h3");
+    let desc = document.createElement("p");
+
+    let back = document.createElement("a");
+    back.textContent = "Назад";
+
+    let forward = document.createElement("a");
+    forward.textContent = "Вперед";
+
+    function update() {
+      img.src = images[index].path;
+      title.textContent = images[index].title;
+      desc.textContent = images[index].description;
+      counter.textContent = "Зображення " + (index + 1) + " з " + images.length;
+
+      back.style.display = index === 0 ? "none" : "inline";
+      forward.style.display = index === images.length - 1 ? "none" : "inline";
+    }
+
+    back.onclick = () => { index--; update(); };
+    forward.onclick = () => { index++; update(); };
+
+    container.append(counter, back, img, forward, title, desc);
+    update();
+  }
+
+  initPhotoRotator("rotator", imagesArray);
+</script>
+
+</body>
+</html>
