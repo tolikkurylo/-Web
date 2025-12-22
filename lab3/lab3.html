@@ -1,88 +1,137 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Курило Анатолій ПІ(3)-03 — Лабораторна 3</title>
-  <style>
-    #rotator {
-      width: 400px;
-      text-align: center;
-      margin: 20px auto;
-      font-family: Arial;
-    }
-    img {
-      width: 100%;
-      height: auto;
-    }
-    a {
-      margin: 0 15px;
-      cursor: pointer;
-      color: blue;
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Курило Анатолій ПІ(3)-03 — Лабораторна 3</title>
+
+<style>
+body { font-family: Arial; margin: 20px; }
+section { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; }
+h2 { margin-top: 0; }
+input { margin: 5px; }
+.correct { color: green; }
+.wrong { color: red; }
+#rotator img { width: 300px; }
+a { cursor: pointer; margin: 10px; }
+.captcha span {
+  display: inline-block;
+  width: 15px;
+  height: 20px;
+  background: #ddd;
+  margin: 2px;
+  text-align: center;
+}
+</style>
 </head>
 
 <body>
 
-<h1 align="center">Лабораторна робота 3</h1>
-<h2 align="center">Галерея зображень (тема: Коти)</h2>
+<h1>Лабораторна робота 3</h1>
 
+<!-- ЗАВДАННЯ 1 -->
+<section>
+<h2>1. Температура</h2>
+<input id="f" placeholder="Фаренгейт">
+<input id="c" placeholder="Цельсій">
+</section>
+
+<!-- ЗАВДАННЯ 2 -->
+<section>
+<h2>2. Таблиця множення</h2>
+<p id="task2"></p>
+<input id="answer2">
+<button onclick="check2()">Перевірити</button>
+<button onclick="next2()">Наступне</button>
+<p id="result2"></p>
+</section>
+
+<!-- ЗАВДАННЯ 3 -->
+<section>
+<h2>3. Таблиця множення (радіо)</h2>
+<p id="task3"></p>
+<div id="options"></div>
+<p id="result3"></p>
+</section>
+
+<!-- ЗАВДАННЯ 4 -->
+<section>
+<h2>4. Галерея (Коти)</h2>
 <div id="rotator"></div>
+</section>
+
+<!-- ЗАВДАННЯ 5 -->
+<section>
+<h2>5. Captcha</h2>
+<div class="captcha" id="captcha"></div>
+<input id="captchaInput">
+<button onclick="checkCaptcha()">Перевірити</button>
+<p id="captchaResult"></p>
+</section>
 
 <script>
-  // Масив зображень (КОТИ)
-  let imagesArray = [
-    {
-      path: "images/cat1.jpg",
-      title: "Кіт 1",
-      description: "5 кошенят на природі"
-    },
-    {
-      path: "images/cat2.jpg",
-      title: "Кіт 2",
-      description: "2 сплячих кота"
-    },
-    {
-      path: "images/cat3.jpg",
-      title: "Кіт 3",
-      description: "3 білосніжних кошенят"
-    }
-  ];
+/* ЗАВДАННЯ 1 */
+f.oninput = () => c.value = ((f.value - 32) * 5/9).toFixed(1);
+c.oninput = () => f.value = (c.value * 9/5 + 32).toFixed(1);
 
-  function initPhotoRotator(containerId, images) {
-    let index = 0;
-    let container = document.getElementById(containerId);
+/* ЗАВДАННЯ 2 */
+let a, b;
+function next2() {
+  a = Math.floor(Math.random()*9)+1;
+  b = Math.floor(Math.random()*9)+1;
+  task2.textContent = `${a} × ${b} = ?`;
+}
+function check2() {
+  result2.textContent = answer2.value == a*b ? "Правильно" : "Неправильно";
+}
+next2();
 
-    let counter = document.createElement("div");
-    let img = document.createElement("img");
-    let title = document.createElement("h3");
-    let desc = document.createElement("p");
+/* ЗАВДАННЯ 3 */
+let x = Math.floor(Math.random()*9)+1;
+let y = Math.floor(Math.random()*9)+1;
+task3.textContent = `${x} × ${y} = ?`;
+let correct = x*y;
+let answers = [correct, correct+1, correct-1].sort(() => Math.random()-0.5);
+answers.forEach(v => {
+  let r = document.createElement("input");
+  r.type="radio"; r.name="q";
+  r.onclick=()=>result3.textContent = v==correct?"Правильно":"Ні";
+  options.append(r, v, document.createElement("br"));
+});
 
-    let back = document.createElement("a");
-    back.textContent = "Назад";
+/* ЗАВДАННЯ 4 */
+let images = [
+ {path:"images/cat1.jpg",title:"Кіт 1",description:"5 кошенят на природі"},
+ {path:"images/cat2.jpg",title:"Кіт 2",description:"2 сплячих кота"},
+ {path:"images/cat3.jpg",title:"Кіт 3",description:"3 білосніжних кошенят"}
+];
+let i=0;
+let img=document.createElement("img");
+let p=document.createElement("p");
+let back=document.createElement("a");
+let next=document.createElement("a");
+back.textContent="Назад"; next.textContent="Вперед";
+back.onclick=()=>{i--;update()};
+next.onclick=()=>{i++;update()};
+rotator.append(back,img,next,p);
+function update(){
+ img.src=images[i].path;
+ p.textContent=images[i].title+" — "+images[i].description;
+ back.style.display=i==0?"none":"inline";
+ next.style.display=i==images.length-1?"none":"inline";
+}
+update();
 
-    let forward = document.createElement("a");
-    forward.textContent = "Вперед";
-
-    function update() {
-      img.src = images[index].path;
-      title.textContent = images[index].title;
-      desc.textContent = images[index].description;
-      counter.textContent = "Зображення " + (index + 1) + " з " + images.length;
-
-      back.style.display = index === 0 ? "none" : "inline";
-      forward.style.display = index === images.length - 1 ? "none" : "inline";
-    }
-
-    back.onclick = () => { index--; update(); };
-    forward.onclick = () => { index++; update(); };
-
-    container.append(counter, back, img, forward, title, desc);
-    update();
-  }
-
-  initPhotoRotator("rotator", imagesArray);
+/* ЗАВДАННЯ 5 */
+let cap="";
+for(let i=0;i<4;i++){ cap+=Math.floor(Math.random()*10); }
+[...cap].forEach(d=>{
+ let s=document.createElement("span");
+ s.textContent=d;
+ captcha.appendChild(s);
+});
+function checkCaptcha(){
+ captchaResult.textContent = captchaInput.value==cap?"OK":"Помилка";
+}
 </script>
 
 </body>
