@@ -1531,7 +1531,7 @@ body.modal-open{
 }
 
 .hero__container{
-  max-width: auto;  
+  max-width: none;  
   margin: 0 auto;
   margin-bottom: 77.7%;
 }
@@ -1589,4 +1589,5 @@ body.modal-open{
 @media (max-width: 520px) {
   .team__grid { grid-template-columns: 1fr; }
 }
+
 
