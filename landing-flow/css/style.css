@@ -1589,5 +1589,3 @@ body.modal-open{
 @media (max-width: 520px) {
   .team__grid { grid-template-columns: 1fr; }
 }
-
-
